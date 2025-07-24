@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Certificate</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: linear-gradient(135deg, #f8f8f8, #ffffff);
+      font-family: 'Georgia', serif;
+    }
+
+    .certificate {
+      position: relative;
+      max-width: 1120px;
+      width: 100%;
+      margin: auto;
+      background: linear-gradient(to bottom right, #fffef5, #ffffff);
+      border: 8px solid #d4af37;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      padding: 2rem;
+    }
+
+    .certificate::before, .certificate::after {
+      content: '';
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      border: 8px solid #d4af37;
+      border-radius: 50%;
+      z-index: -1;
+      opacity: 0.15;
+    }
+
+    .certificate::before {
+      top: -40px;
+      left: -40px;
+    }
+
+    .certificate::after {
+      bottom: -40px;
+      right: -40px;
+    }
+
+    .certificate-background {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+    }
+
+    .certificate-background img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.05;
+    }
+
+    .certificate img {
+      max-width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
+
+    h1.text-4xl {
+      background: linear-gradient(to right, #d4af37, #b8860b);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    @media print {
+      @page {
+        size: A4 landscape;
+        margin: 0;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .certificate {
+        max-width: 1120px;
+        width: 100vw;
+        height: 100vh;
+        margin: 0 auto;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      .certificate img {
+        max-height: 100%;
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="no-print max-w-2xl mx-auto mb-6">
+    <form id="certificateForm" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="studentName">Student Name</label>
+        <input id="studentName" type="text" placeholder="Enter student name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" required>
+      </div>
+
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="courseName">Course Name</label>
+        <select id="courseName" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" required>
+          <option value="">-- Select a Course --</option>
+          <option value="Full Stack Web Development">Full Stack Web Development</option>
+          <option value="Python Programming">Python Programming</option>
+          <option value="Data Science">Data Science</option>
+          <option value="Digital Marketing">Digital Marketing</option>
+          <option value="AWS Cloud">AWS Cloud</option>
+          <option value="Cyber Security">Cyber Security</option>
+          <option value="Java">Java</option>
+          <option value="Selenium Testing">Selenium Testing</option>
+        </select>
+      </div>
+
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="startDate">Start Date</label>
+        <input id="startDate" type="date" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" required>
+      </div>
+
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="endDate">End Date</label>
+        <input id="endDate" type="date" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" required>
+      </div>
+
+      <div class="flex items-center justify-between">
+        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Generate Certificate</button>
+      </div>
+    </form>
+  </div>
+
+  <div id="certificateContainer" class="certificate hidden relative">
+    <div class="certificate-background">
+      <img src="https://www.transparenttextures.com/patterns/cubes.png" alt="Background pattern">
+    </div>
+
+    <div class="w-full px-12 pt-4 mb-6 flex justify-between items-center">
+      <div class="flex items-center justify-center w-1/5">
+        <img src="ittraining-classes.jpg" alt="IT Training Logo" style="max-height: 100px;" class="object-contain" />
+      </div>
+      <div class="w-3/5 text-center">
+        <h1 class="text-4xl font-bold uppercase">Certificate of Achievement</h1>
+      </div>
+      <div class="flex items-center justify-center w-1/5">
+        <img src="iso-certified.jpg" alt="ISO Certified Logo" style="max-height: 80px;" class="object-contain" />
+      </div>
+    </div>
+
+    <p class="text-lg text-gray-700 mb-4">This is to certify that</p>
+    <h2 id="certStudentName" class="text-4xl font-semibold text-gray-800 mb-6 underline"></h2>
+    <p class="text-lg text-gray-700 mb-4">has successfully completed the</p>
+    <h3 id="certCourseName" class="text-3xl font-semibold text-indigo-700 mb-6"></h3>
+    <p class="text-md text-gray-600 mb-6">Course from <strong id="certStartDate"></strong> to <strong id="certEndDate"></strong></p>
+
+    <div class="w-full px-16 mt-8 flex justify-between items-end mb-12">
+      <div class="text-center">
+        <img src="himani_signature.jpg" alt="Himani Signature" style="max-height: 48px;" class="object-contain mx-auto mb-[-6px]" />
+        <div class="border-t-2 border-gray-600 w-40 mx-auto mt-1"></div>
+        <p class="text-sm text-gray-600 mt-1">HR</p>
+      </div>
+      <div class="text-center translate-y-2">
+        <img src="itc_seal.png" alt="Seal" class="h-32 w-32 object-contain mx-auto mb-2" />
+        <p id="certID" class="text-lg font-semibold text-gray-700">ID: ITC001</p>
+      </div>
+      <div class="text-center">
+        <img src="parveen_signature.jpg" alt="Parveen Signature" style="max-height: 48px;" class="object-contain mx-auto mb-[-6px]" />
+        <div class="border-t-2 border-gray-600 w-40 mx-auto mt-1"></div>
+        <p class="text-sm text-gray-600 mt-1">Director</p>
+      </div>
+    </div>
+
+    <div class="text-center text-gray-600 mb-4">
+      <p class="text-sm">https://ittrainingclasses.in</p>
+    </div>
+
+    <div class="text-center mt-6 no-print">
+      <button onclick="window.print()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded shadow">Download Certificate</button>
+      <button onclick="location.reload()" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded shadow ml-2">Reset</button>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('certificateForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      document.querySelector('.certificate').classList.remove('hidden');
+      const name = document.getElementById('studentName').value.trim();
+      const course = document.getElementById('courseName').value.trim();
+      const startDate = document.getElementById('startDate').value.trim();
+      const endDate = document.getElementById('endDate').value.trim();
+      document.getElementById('certStudentName').textContent = name;
+      document.getElementById('certCourseName').textContent = course;
+      document.getElementById('certStartDate').textContent = startDate;
+      document.getElementById('certEndDate').textContent = endDate;
+
+      let certCounter = localStorage.getItem('certCounter') || 0;
+      certCounter++;
+      localStorage.setItem('certCounter', certCounter);
+      const formattedID = 'ITC' + certCounter.toString().padStart(3, '0');
+      document.getElementById('certID').textContent = 'ID: ' + formattedID;
+
+      document.querySelector('.no-print').style.display = 'none';
+    });
+  </script>
+</body>
+</html>
